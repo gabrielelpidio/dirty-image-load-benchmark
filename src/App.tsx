@@ -18,7 +18,6 @@ const average = (array: number[]) =>
   array.reduce((a, b) => a + b) / array.length;
 
 const App: Component = () => {
-  const [src, setSrc] = createSignal('');
   const [timeTook, setTimeTook] = createSignal(0);
 
   const onChangeInput: JSX.EventHandler<HTMLInputElement, InputEvent> = async (
