@@ -2,7 +2,7 @@ import type { Component } from 'solid-js';
 
 import logo from './logo.svg';
 import styles from './App.module.css';
-import { createSignal } from 'solid-js';
+import { Show, createSignal } from 'solid-js';
 import type { JSX } from 'solid-js';
 
 const readURL = (file: File) => {
@@ -19,10 +19,12 @@ const average = (array: number[]) =>
 
 const App: Component = () => {
   const [timeTook, setTimeTook] = createSignal(0);
+  const [loading, setLoading] = createSignal(false)
 
   const onChangeInput: JSX.EventHandler<HTMLInputElement, InputEvent> = async (
     evt
   ) => {
+    setLoading(true)
     const file = evt.currentTarget.files?.[0];
     if (!file) {
       return;
@@ -40,10 +42,13 @@ const App: Component = () => {
     );
 
     setTimeTook(average(times));
+    setLoading(false)
   };
   return (
     <div class={styles.App}>
-      <p>Average time took to load 1000 images: {timeTook()}ms</p>
+      <Show when={!loading()} fallback={<p>Loading...</p>}>
+        <p>Average time took to load 1000 images: {timeTook()}ms</p>
+      </Show>
       <input type="file" onInput={onChangeInput} />
     </div>
   );
